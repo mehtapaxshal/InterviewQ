@@ -1,0 +1,42 @@
+// Example program
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <map>
+
+using namespace std;
+
+int Recaman(int n)
+{
+    static map<int,int> myMap;
+    //int result=0;
+    if(n==0)
+    {
+        myMap[0]=1;
+        return 0;
+    }else if(n>0)
+    {
+        
+        int temp=Recaman(n-1);
+        int result = temp-n;
+        if(result>=0 && myMap.find(result)==myMap.end())
+        {
+               myMap[result]=1;
+               return (result);
+        }else
+        {
+                    int res = temp+n;
+                    myMap[res]=1;
+                    return res; 
+        }
+    }
+
+  return 0;
+}
+
+int main()
+{
+  int final=Recaman(11);
+  cout<<final<<endl;
+}
+
