@@ -1,0 +1,123 @@
+// Example program
+#include <iostream>
+#include <string>
+#include <stack>
+#include <vector>
+using namespace std;
+
+/* Returns the precendence of operator */
+
+int priority(char oper)
+{
+    if(oper == '+' || oper =='-')
+        return 1;
+    else if(oper == '*' || oper =='/')
+        return 2;
+return 0;
+}
+
+/* Postfix to Calculation */
+
+void Calculator(vector<string> post)
+{
+    stack<int> s2;
+    int op=0;
+            
+    for(unsigned int i=0;i<post.size();i++)
+    {
+        if(post[i] == "*" || post[i] == "+" || post[i] == "-" || post[i]=="/")
+        {
+            int a = s2.top();
+            s2.pop();
+            
+            int b = s2.top();
+            s2.pop();
+
+            string operation = post[i]; 
+            if(operation == "+")
+                op = b + a;
+            else if(operation == "-")
+                op = b - a;
+            else if(operation == "*")
+                op = b * a;
+            else if(operation == "/")
+                op=b/a;
+            
+            s2.push(op);    
+        }else
+            s2.push(atoi(post[i].c_str()));
+    }
+    
+    cout<<"Final answer is "<<op<<endl;
+        
+}
+
+int main()
+{
+    
+    string input;
+    cin>>input;         // Scan Input
+    
+    stack<char> s1;
+    string result;      
+    string temp;
+    vector<string> post;
+
+    /* Infix To PostFix Conversion */
+    
+    for(unsigned int i=0;i<input.length();i++)
+    {
+        
+        if(input[i] == '*' || input[i] == '+' || input[i] =='-' || input[i]=='/')
+        {
+            post.push_back(temp);
+            temp="";
+            if(s1.empty())
+                s1.push(input[i]);
+            else
+            {
+                int opstack = priority(s1.top());
+                int pr = priority(input[i]);
+                if(pr > opstack)
+                {
+                    s1.push(input[i]);
+                }else
+                {
+                    while(!s1.empty() && pr <= priority(s1.top()))
+                    {
+                        result+=s1.top();
+                        temp+=s1.top();
+                        post.push_back(temp);
+                        temp="";
+                        s1.pop();
+                    }
+                    s1.push(input[i]);
+                }
+            }
+        }else
+        {
+            temp+=input[i];
+            result+=input[i];
+        }
+        if(i==input.length()-1)
+            post.push_back(temp);
+    }
+    temp="";
+    while(!s1.empty())
+    {
+        result+=s1.top();
+        
+        temp+=s1.top();
+        post.push_back(temp);
+        temp="";
+        
+        s1.pop();
+    }
+    
+    cout<<"Postfix Result is "<<result<<endl;
+    
+    Calculator(post);
+    
+    return 0;
+    
+}
