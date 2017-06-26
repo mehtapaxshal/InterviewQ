@@ -1,0 +1,47 @@
+/*
+ * Complete the function below.
+ */
+    static boolean isOperator(char in)                                      //returns true if operator else false
+    {
+        if(in == '+' || in == '-' || in == '*' || in == '/')
+            return true;
+        return false;
+    }
+    static String[] prefixToPostfix(String[] prefixes) {
+
+        int i=0;
+        int size = prefixes.length;
+        String[] result = new String[size];
+        for(i=0;i<size;i++)
+        {
+            Stack stack = new Stack();
+            int j=0;
+            String input=prefixes[i];
+            int len = input.length();
+            String s1,s2;
+            for(j=len-1;j>=0;j--)                                           //traverse through each character from the string
+            {
+                if(isOperator(input.charAt(j)) == true)                     //check if operator
+                {
+                    s1 = stack.peek().toString();  
+                    stack.pop();                                            //pop element 1
+                    s2 = stack.peek().toString();
+                    stack.pop();                                            //pop element 2
+                    s2 = s2 + input.charAt(j);
+                    stack.push(s1 + s2);                                    //push concatenated element on to the stack
+                }
+                else                                                        //if operand
+                {
+                    s1 = "";
+                    s1 = s1 + input.charAt(j);
+                    stack.push(s1);                                         //push on to the stack
+                }
+            
+            }
+            result[i] = stack.peek().toString();                            //top element contains resultant string
+        }
+        
+        
+    return result;
+    }
+
